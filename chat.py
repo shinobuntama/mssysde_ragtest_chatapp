@@ -42,7 +42,7 @@ aoai_service = AzureOpenAIService()
 cosmos_service = CosmosService()
 
 st.set_page_config(layout="wide")
-st.title("🚀RAG テストサイトver2.3")
+st.title("🚀RAG テストサイトver2.4 VC="+ str(VECTOR_SCORE_THRESHOLD) )
 
 # SESSION MANAGEMENT
 if "chat_messages" not in st.session_state:
@@ -114,8 +114,8 @@ if user_message:
         azure_endpoint=os.getenv("AOAI_ENDPOINT")
     )
     
-    print("API_KEY=", repr(os.getenv("AOAI_API_KEY")))
-    print("ENDPOINT=", repr(os.getenv("AOAI_ENDPOINT")))
+    # print("API_KEY=", repr(os.getenv("AOAI_API_KEY")))
+    # print("ENDPOINT=", repr(os.getenv("AOAI_ENDPOINT")))
     print("API_VERSION=", repr(os.getenv("AOAI_API_VERSION")))
     print("DEPLOYMENT=", repr(AOAI_CHAT_DEPLOYMENT))
 
