@@ -42,11 +42,14 @@ class CosmosService:
 #                {'name': '@embedding', 'value': embedding}
 #            ]
 
-            query = f"""SELECT TOP 10 c.file_name, c.page_number, c.content
+            query = f"""SELECT TOP 10 c.file_name, c.page_number, c.content,
+            VectorDistance(c.vector, @embedding) AS SimilarityScore 
             FROM c 
+            WHERE VectorDistance(c.vector, @embedding) > @threshold
             ORDER BY VectorDistance(c.vector, @embedding)"""
             parameters = [
-                {'name': '@embedding', 'value': embedding}
+                {'name': '@embedding', 'value': embedding},
+                {'name': '@threshold', 'value': VECTOR_SCORE_THRESHOLD}
             ]
 
             items = self.container.query_items(
@@ -60,10 +63,10 @@ class CosmosService:
             resources = [item for item in items]
             for item in resources:
                 print(item.keys())
-#                print(
-#                    f'🚀{item["file_name"]}, {item["page_number"]}, {item["content"]}, {item["SimilarityScore"]} is a capitol \n')
                 print(
-                    f'🚀{item["file_name"]}, {item["page_number"]}, {item["content"]} is a capitol \n')
+                    f'🚀{item["file_name"]}, {item["page_number"]}, {item["content"]}, {item["SimilarityScore"]} is a capitol \n')
+#                print(
+#                    f'🚀{item["file_name"]}, {item["page_number"]}, {item["content"]} is a capitol \n')
 
             return resources
 

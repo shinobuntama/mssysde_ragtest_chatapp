@@ -42,7 +42,7 @@ aoai_service = AzureOpenAIService()
 cosmos_service = CosmosService()
 
 st.set_page_config(layout="wide")
-st.title("🚀RAG テストサイト")
+st.title("🚀RAG テストサイトver2.3")
 
 # SESSION MANAGEMENT
 if "chat_messages" not in st.session_state:
@@ -93,8 +93,8 @@ if user_message:
         # ループ番号を付与してファイルの内容をシステムメッセージに追加
         system_message += f'\n\n--- {index + 1} ---\n{result["content"]}'
         # 画面に表示する検索結果を追加
-#        display_searched_file_name += f'\n{index + 1}. {result["file_name"]}  (page{result["page_number"]})  : {result["SimilarityScore"]}'
-        display_searched_file_name += f'\n{index + 1}. {result["file_name"]}  (page{result["page_number"]})'
+        display_searched_file_name += f'\n{index + 1}. {result["file_name"]}  (page{result["page_number"]})  : {result["SimilarityScore"]}'
+#        display_searched_file_name += f'\n{index + 1}. {result["file_name"]}  (page{result["page_number"]})'
     print(f"system_message: {system_message}")
 
     # OpenAIリクエスト用のメッセージ
@@ -157,9 +157,10 @@ if user_message:
         #            content = None                    
         
         assistant_text = response.choices[0].message.content
-        st.write(assistant_text)
-
-                    
+        # 参考情報を表示すると、関係ない文書が出るので削除⇒もどし
+        st.write(assistant_text + display_searched_file_name)
+#        st.write(assistant_text)
+        
     # AIの回答をchat_messagesに追加
     st.session_state["chat_messages"].append(
         {"role": "assistant", "content": assistant_text}
